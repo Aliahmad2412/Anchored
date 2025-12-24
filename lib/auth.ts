@@ -27,20 +27,30 @@ export async function verifyAdmin(email: string, password: string): Promise<bool
 }
 
 export async function isAdminEmail(email: string): Promise<boolean> {
-  const supabase = getServerSupabase()
-  
-  // Check in Supabase admin_emails table
-  const { data, error } = await supabase
-    .from('admin_emails')
-    .select('email')
-    .eq('email', email.toLowerCase())
-    .single()
-
-  if (error || !data) {
-    // Fallback: check if email has a password configured
+  // During build, API routes won't work, so just check local passwords
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
     return email.toLowerCase() in ADMIN_PASSWORDS
   }
 
-  return true
+  try {
+    const supabase = getServerSupabase()
+    
+    // Check in Supabase admin_emails table
+    const { data, error } = await supabase
+      .from('admin_emails')
+      .select('email')
+      .eq('email', email.toLowerCase())
+      .single()
+
+    if (error || !data) {
+      // Fallback: check if email has a password configured
+      return email.toLowerCase() in ADMIN_PASSWORDS
+    }
+
+    return true
+  } catch (error) {
+    // If Supabase is not available (e.g., during build), fallback to local check
+    return email.toLowerCase() in ADMIN_PASSWORDS
+  }
 }
 
