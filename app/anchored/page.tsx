@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
+import { supabase } from '@/lib/supabase'
 
 export default function AnchoredWaitlist() {
   const [formData, setFormData] = useState({
@@ -67,17 +68,36 @@ export default function AnchoredWaitlist() {
     setIsSubmitting(true)
 
     try {
-      const response = await fetch('/api/waitlist', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
+      // Validate required fields
+      if (!formData.firstName || !formData.lastName || !formData.email || !formData.gdprConsent) {
+        throw new Error('All fields are required')
+      }
 
-      if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.error || 'Something went wrong')
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(formData.email)) {
+        throw new Error('Invalid email address')
+      }
+
+      // Insert or update waitlist entry using Supabase client
+      const { error } = await supabase
+        .from('waitlist')
+        .upsert(
+          {
+            email: formData.email.toLowerCase(),
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            gdpr_consent: formData.gdprConsent,
+            updated_at: new Date().toISOString(),
+          },
+          {
+            onConflict: 'email',
+          }
+        )
+
+      if (error) {
+        console.error('Supabase error:', error)
+        throw new Error('Failed to save to waitlist')
       }
 
       setIsSubmitted(true)
