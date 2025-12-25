@@ -105,7 +105,7 @@ export default function AnchoredWaitlist() {
             last_name: formData.lastName,
             gdpr_consent: formData.gdprConsent,
             updated_at: new Date().toISOString(),
-          },
+          } as any,
           {
             onConflict: 'email',
           }
