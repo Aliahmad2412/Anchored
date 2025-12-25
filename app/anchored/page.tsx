@@ -3,9 +3,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 
-// Get basePath for images (matches next.config.js)
-// For GitHub Pages, always use /Anchored in production (repository name)
-// Use runtime detection for client-side rendering
 function getBasePath() {
   if (typeof window === 'undefined') return ''
   // Check if we're on GitHub Pages by looking at the pathname
@@ -176,7 +173,7 @@ export default function AnchoredWaitlist() {
             <div className="space-y-6">
               {/* Title */}
               <h2 className="text-5xl md:text-6xl lg:text-7xl font-serif bg-gradient-to-r from-pearl-aqua-500 to-maize-500 bg-clip-text text-transparent text-3d-animate">
-                You're Anchored.
+              Anchored is coming soon.
               </h2>
               
               {/* Body text with stagger */}
@@ -199,7 +196,7 @@ export default function AnchoredWaitlist() {
     <div className="min-h-screen bg-gradient-to-b from-white via-white to-maize-50">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 md:pt-24 md:pb-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-6 md:pt-24 md:pb-8">
           <div 
             ref={(el) => { sectionRefs.current['hero'] = el }}
             className={`space-y-8 transition-all duration-1000 ${
@@ -208,7 +205,7 @@ export default function AnchoredWaitlist() {
           >
             <div className="text-center space-y-4">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif tracking-tight leading-tight">
-                <span className="block bg-gradient-to-r from-pearl-aqua-500 to-maize-500 bg-clip-text text-transparent hover:from-pearl-aqua-600 hover:to-maize-600 transition-all duration-300 cursor-default">
+                <span className="block text-black cursor-default">
                   Anchored
                 </span>
               </h1>
@@ -226,7 +223,7 @@ export default function AnchoredWaitlist() {
           {/* Opening Text */}
           <div 
             ref={(el) => { sectionRefs.current['opening'] = el }}
-            className={`space-y-6 text-slate-800 leading-relaxed transition-all duration-1000 delay-100 ${
+            className={`space-y-6 text-slate-800 leading-relaxed transition-all duration-1000 delay-100 mb-0 ${
               visibleSections.has('opening') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
@@ -242,8 +239,14 @@ export default function AnchoredWaitlist() {
             <p className="text-base md:text-lg font-medium text-slate-900">
               If this feels familiar, nothing is wrong with you.
             </p>
-            <p className="text-base md:text-lg font-light">
+            <p className="text-base md:text-lg font-light mb-0">
               You're simply carrying more than your system was designed to hold.
+            </p>
+            <p className="text-lg md:text-xl text-slate-900 font-light leading-relaxed -mt-6">
+              <span className="font-medium italic">Anchored</span> is a book for people who want to stay grounded, clear, and human inside fast-moving systems that reward speed, pressure, and constant output.
+            </p>
+            <p className="text-base md:text-lg text-slate-800 font-light leading-relaxed -mt-4">
+              This is not a book about stepping away from work or slowing life down.
             </p>
           </div>
 
@@ -254,12 +257,6 @@ export default function AnchoredWaitlist() {
               visibleSections.has('description') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <p className="text-lg md:text-xl text-slate-900 font-light leading-relaxed">
-              <span className="font-medium italic">Anchored</span> is a book for people who want to stay grounded, clear, and human inside fast-moving systems that reward speed, pressure, and constant output.
-            </p>
-            <p className="text-base md:text-lg text-slate-800 font-light leading-relaxed">
-              This is not a book about stepping away from work or slowing life down.
-            </p>
             <p className="text-base md:text-lg text-slate-900 font-medium leading-relaxed">
               It's about learning how to stay whole within it.
             </p>
@@ -344,7 +341,7 @@ export default function AnchoredWaitlist() {
           {/* Waitlist Section */}
           <div 
             ref={(el) => { sectionRefs.current['waitlist'] = el }}
-            className={`bg-white rounded-2xl shadow-xl p-8 md:p-12 border-2 border-maize-200 transition-all duration-1000 delay-500 ${
+            className={`bg-white rounded-2xl shadow-xl px-8 md:px-12 pt-8 md:pt-12 pb-4 md:pb-6 border-2 border-maize-200 transition-all duration-1000 delay-500 ${
               visibleSections.has('waitlist') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
@@ -452,18 +449,18 @@ export default function AnchoredWaitlist() {
               </button>
             </form>
           </div>
+          
+          <p className="text-lg md:text-xl text-slate-800 font-bold italic text-center mt-2 mb-0">
+            If you're curious, here's what a few early readers have shared about the book.
+          </p>
 
           {/* Testimonials */}
           <div 
             ref={(el) => { sectionRefs.current['testimonials'] = el }}
-            className={`space-y-12 pt-12 border-t border-pearl-aqua-200 transition-all duration-1000 delay-600 ${
+            className={`space-y-12 pt-2 border-t border-pearl-aqua-200 transition-all duration-1000 delay-600 ${
               visibleSections.has('testimonials') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <p className="text-lg md:text-xl text-slate-800 font-light italic text-center">
-              If you're curious, here's what a few early readers have shared about the book.
-            </p>
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {[
                 {
