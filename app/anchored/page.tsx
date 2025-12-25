@@ -6,8 +6,8 @@ import { supabase } from '@/lib/supabase'
 function getBasePath() {
   if (typeof window === 'undefined') return ''
   // Check if we're on GitHub Pages by looking at the pathname
-  if (window.location.pathname.startsWith('/Anchored')) {
-    return '/Anchored'
+  if (window.location.pathname.startsWith('/waitlist')) {
+    return '/waitlist'
   }
   // For local development, return empty string
   return ''
