@@ -26,21 +26,14 @@ npm install
    - Add your Supabase credentials:
      - `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
      - `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Your Supabase anon key
-     - `SUPABASE_SERVICE_ROLE_KEY` - Your Supabase service role key (keep secret!)
 
-4. Set up admin access:
-   - Follow the instructions in `ADMIN_SETUP.md`
-   - Add admin emails to Supabase `admin_emails` table
-   - Configure admin passwords in `lib/auth.ts`
-
-5. Run the development server:
+4. Run the development server:
 ```bash
 npm run dev
 ```
 
-6. Access the pages:
-   - Waitlist page: [http://localhost:3000/anchored](http://localhost:3000/anchored)
-   - Admin login: [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
+5. Access the waitlist page:
+   - [http://localhost:3000/anchored](http://localhost:3000/anchored)
 
 ## Features
 
@@ -52,12 +45,6 @@ npm run dev
 - Success message after submission
 - No navigation or footer (standalone page)
 
-### Admin Panel (`/admin`)
-- Secure email/password authentication
-- View all waitlist entries
-- Only accessible to authorized admin emails
-- Session-based authentication
-
 ## Page Structure
 
 - **`/anchored`** - Public waitlist signup page
@@ -65,11 +52,6 @@ npm run dev
   - Book cover image placeholder
   - Waitlist signup form
   - Testimonials from early readers
-
-- **`/admin/login`** - Admin authentication page
-- **`/admin`** - Admin dashboard (protected)
-  - View all waitlist entries
-  - Export functionality (can be added)
 
 ## Deployment
 
@@ -85,6 +67,4 @@ For production deployment to `rochelletrow.com`:
 
 - The book cover image placeholder needs to be replaced with the actual cover image
 - LinkedIn links in testimonials are displayed as text (no outbound links as per requirements)
-- Admin emails are stored in Supabase for easy management
-- Passwords are hashed using bcrypt for security
 

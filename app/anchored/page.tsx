@@ -3,49 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 
-function getBasePath() {
-  if (typeof window === 'undefined') return ''
-  const pathname = window.location.pathname
-  const hostname = window.location.hostname
-  
-  // Check if we're on GitHub Pages
-  // GitHub Pages URLs are like: username.github.io/repository-name
-  if (hostname.includes('github.io')) {
-    // Extract repository name from pathname or use default
-    if (pathname.startsWith('/waitlist')) {
-      return '/waitlist'
-    }
-    // If on github.io but pathname doesn't start with /waitlist, still use /waitlist as basePath
-    return '/waitlist'
-  }
-  
-  // Check pathname for basePath (for testing or custom domains)
-  if (pathname.startsWith('/waitlist')) {
-    return '/waitlist'
-  }
-  
-  // For local development, return empty string
-  return ''
-}
-
 export default function AnchoredWaitlist() {
-  // Initialize basePath immediately for SSR compatibility
-  const [basePath, setBasePath] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return getBasePath()
-    }
-    return ''
-  })
-  
-  // Update basePath after mount to ensure it's correct
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const detectedBasePath = getBasePath()
-      if (detectedBasePath !== basePath) {
-        setBasePath(detectedBasePath)
-      }
-    }
-  }, [basePath])
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -188,9 +146,8 @@ export default function AnchoredWaitlist() {
               {/* Root reveal mask */}
               <div className="root-reveal-mask">
                 <img
-                  src={basePath ? `${basePath}/anchored_tree_transparent.png` : '/anchored_tree_transparent.png'}
+                  src="/anchored_tree_transparent.png"
                   alt="Anchored Tree"
-                  key={basePath}
                   width={600}
                   height={900}
                   className="w-full h-auto"
@@ -309,9 +266,8 @@ export default function AnchoredWaitlist() {
                 <div className="relative group w-full max-w-[420px]">
                   <div className="relative rounded-lg shadow-2xl overflow-hidden transition-all duration-500 group-hover:shadow-3xl group-hover:scale-[1.02] bg-white">
                     <img
-                      src={basePath ? `${basePath}/book-cover.jpg` : '/book-cover.jpg'}
+                      src="/book-cover.jpg"
                       alt="Anchored by Rochelle Trow - Book Cover"
-                      key={basePath}
                       width={800}
                       height={1200}
                       className="w-full h-auto object-contain"

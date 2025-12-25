@@ -75,33 +75,4 @@ export const supabase = new Proxy({} as ReturnType<typeof createClient>, {
   }
 })
 
-// Server-side Supabase client (uses service role key for admin operations)
-export const createServerClient = () => {
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-  // During build time, return a placeholder client that will fail gracefully
-  if (isBuildTime()) {
-    return createClient(
-      getSupabaseUrl(),
-      serviceRoleKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.build-placeholder-service-key',
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    )
-  }
-
-  if (!serviceRoleKey) {
-    throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY')
-  }
-
-  return createClient(getSupabaseUrl(), serviceRoleKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  })
-}
 
