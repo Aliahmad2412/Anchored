@@ -7,17 +7,26 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 const isBuildTime = () => {
   return (
     process.env.NEXT_PHASE === 'phase-production-build' ||
-    process.env.NODE_ENV === 'production' && !supabaseUrl ||
-    typeof window === 'undefined' && !supabaseUrl
+    (process.env.NODE_ENV === 'production' && !supabaseUrl && typeof window === 'undefined')
   )
+}
+
+// Check if URL is a placeholder
+const isPlaceholderUrl = (url: string) => {
+  return url.includes('build-placeholder') || url.includes('placeholder')
 }
 
 // Only throw error at runtime, not during build
 // During static export build, provide placeholder values
 const getSupabaseUrl = () => {
-  if (!supabaseUrl) {
-    if (isBuildTime()) {
+  if (!supabaseUrl || isPlaceholderUrl(supabaseUrl)) {
+    if (isBuildTime() || (typeof window !== 'undefined' && isPlaceholderUrl(supabaseUrl || ''))) {
       // Use a valid URL format that Supabase client will accept
+      return 'https://build-placeholder.supabase.co'
+    }
+    if (typeof window !== 'undefined') {
+      // In browser, if no valid URL, return placeholder to avoid errors
+      console.warn('NEXT_PUBLIC_SUPABASE_URL is not set. Form submission will not work.')
       return 'https://build-placeholder.supabase.co'
     }
     throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL')
@@ -27,7 +36,8 @@ const getSupabaseUrl = () => {
     new URL(supabaseUrl)
     return supabaseUrl
   } catch {
-    if (isBuildTime()) {
+    if (isBuildTime() || typeof window !== 'undefined') {
+      console.warn('Invalid NEXT_PUBLIC_SUPABASE_URL. Using placeholder.')
       return 'https://build-placeholder.supabase.co'
     }
     throw new Error('Invalid NEXT_PUBLIC_SUPABASE_URL: Must be a valid HTTP or HTTPS URL')
