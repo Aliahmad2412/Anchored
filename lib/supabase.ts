@@ -57,6 +57,14 @@ const getSupabaseAnonKey = () => {
 
 // Lazy initialization to avoid errors during build
 let _supabaseClient: ReturnType<typeof createClient> | null = null
+let _supabaseUrl: string | null = null
+
+// Helper to check if Supabase is properly configured
+export const isSupabaseConfigured = () => {
+  const url = getSupabaseUrl()
+  _supabaseUrl = url
+  return !url.includes('build-placeholder') && !url.includes('placeholder') && url.includes('.supabase.co')
+}
 
 export const supabase = new Proxy({} as ReturnType<typeof createClient>, {
   get(_target, prop) {

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { supabase } from '@/lib/supabase'
+import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 
 function getBasePath() {
   if (typeof window === 'undefined') return ''
@@ -96,9 +96,8 @@ export default function AnchoredWaitlist() {
       }
 
       // Check if Supabase is properly configured
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-      if (!supabaseUrl || supabaseUrl.includes('build-placeholder') || supabaseUrl.includes('placeholder')) {
-        throw new Error('Supabase is not configured. Please contact the site administrator.')
+      if (!isSupabaseConfigured()) {
+        throw new Error('The waitlist form is currently unavailable. Please contact the site administrator or try again later.')
       }
 
       // Insert or update waitlist entry using Supabase client
